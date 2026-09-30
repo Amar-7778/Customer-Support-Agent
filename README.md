@@ -1,4 +1,4 @@
-# Novintix: Customer Support Agent
+# Novintix Customer Support Agent
 
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
@@ -7,7 +7,7 @@
 [![Groq Cloud](https://img.shields.io/badge/Groq-Llama%203.3%2070B-F55036.svg)](https://groq.com/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-State%20Machine-orange.svg)](https://github.com/langchain-ai/langgraph)
 
-Novintix (repository: Customer-Support-Agent) is a triage and response agent that classifies customer queries, enforces safety routing rules, retrieves relevant historical resolutions, and directs high-liability or urgent tickets to human specialists. The system is evaluated on 8,398 cleaned tickets from a Kaggle customer support dataset that is synthetic, covering consumer hardware and software support inquiries across five product categories.
+Novintix Customer Support Agent is a triage and response agent that classifies customer queries, enforces safety routing rules, retrieves relevant historical resolutions, and directs high-liability or urgent tickets to human specialists. The system is evaluated on 8,398 cleaned tickets from a Kaggle customer support dataset that is synthetic, covering consumer hardware and software support inquiries across five product categories.
 
 ---
 
