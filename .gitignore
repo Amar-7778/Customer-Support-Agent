@@ -20,3 +20,8 @@ chroma_db/
 *.db
 *.sqlite3
 data/golden_eval_cache.json
+.agents/
+skills-lock.json
+*.png
+screenshots/
+**/screenshots/

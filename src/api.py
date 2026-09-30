@@ -58,6 +58,7 @@ class ChatResponse(BaseModel):
     retrieval_decision: str
     escalate_to_human: bool
     status: str
+    node_traces: List[Dict[str, Any]] = []
 
 class FeedbackRequest(BaseModel):
     ticket_id: str
@@ -149,3 +150,88 @@ def get_metrics():
         "developer_reviews_count": len(reviews),
         "vector_db_cases_count": vector_count,
     }
+
+@app.get("/api/learning-ledger")
+def get_learning_ledger():
+    """Returns accounting of knowledge base additions: human_resolved vs agent_generated_approved, plus rejected."""
+    agent = get_agent()
+    ledger = agent.vector_store.get_ledger_data()
+    reviews = get_developer_reviews()
+    ledger["developer_reviews_count"] = len(reviews)
+    ledger["recent_rejected"] = [
+        {
+            "id": r["id"],
+            "ticket_id": r["ticket_id"],
+            "query": r["query"][:120],
+            "intent": r["intent"],
+            "urgency": r["urgency"],
+            "draft_reply": (r["draft_reply"] or "")[:120],
+            "customer_feedback": r["customer_feedback"],
+            "created_at": r["created_at"]
+        }
+        for r in reviews[:10]
+    ]
+    return ledger
+
+@app.get("/api/replay-samples")
+def get_replay_samples():
+    """Returns curated diverse real dataset tickets for instant pipeline replay."""
+    samples = [
+        {
+            "ticket_id": 96,
+            "category": "Data Loss Outage",
+            "product": "Autodesk AutoCAD",
+            "priority": "High",
+            "query": "My Autodesk AutoCAD crashed, and I lost all the data stored on it. Is there any way to recover the lost data? Please assist."
+        },
+        {
+            "ticket_id": 7,
+            "category": "Account Lockout",
+            "product": "Microsoft Surface",
+            "priority": "Critical",
+            "query": "I'm unable to access my Microsoft Surface account. It keeps displaying an 'Invalid Credentials' error. How can I reset my password and regain access to my account?"
+        },
+        {
+            "ticket_id": 39,
+            "category": "Billing Dispute",
+            "product": "Fitbit Versa Smartwatch",
+            "priority": "Critical",
+            "query": "I noticed an incorrect charge on my recent invoice for the Fitbit Versa Smartwatch. I demand a refund for the disputed amount immediately."
+        },
+        {
+            "ticket_id": 36,
+            "category": "Wi-Fi Connectivity",
+            "product": "GoPro Hero",
+            "priority": "High",
+            "query": "I've recently set up my GoPro Hero, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue?"
+        },
+        {
+            "ticket_id": 115,
+            "category": "Hardware Breakdown",
+            "product": "Sony 4K HDR TV",
+            "priority": "High",
+            "query": "My Sony 4K HDR TV is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you please help me with this?"
+        },
+        {
+            "ticket_id": 23,
+            "category": "Intermittent Device Issue",
+            "product": "Xbox",
+            "priority": "Low",
+            "query": "I'm having an issue with the Xbox. Please assist. The issue I'm facing is intermittent. Sometimes it works fine, but other times it acts up unexpectedly."
+        },
+        {
+            "ticket_id": 649,
+            "category": "Order Modification",
+            "product": "Dell XPS",
+            "priority": "Medium",
+            "query": "I recently placed an order for Dell XPS and would like to check its shipping status or modify the delivery address before it ships."
+        },
+        {
+            "ticket_id": 17,
+            "category": "Security Concern",
+            "product": "Xbox",
+            "priority": "Critical",
+            "query": "I'm having an issue with the Xbox. Please assist. I have noticed unexpected sign-in activity and I'm concerned about the security of my account."
+        }
+    ]
+    return samples

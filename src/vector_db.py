@@ -169,3 +169,47 @@ class VectorStore:
             }]
         )
         return True
+
+    def get_ledger_data(self) -> Dict[str, Any]:
+        """Returns statistics and recent additions of human_resolved vs agent_generated_approved."""
+        total = self.collection.count()
+        agent_res = {"ids": [], "metadatas": [], "documents": []}
+        try:
+            agent_res = self.collection.get(where={"source": "agent_generated_approved"}, limit=20)
+        except Exception:
+            pass
+        agent_count = len(agent_res.get("ids", []))
+        
+        recent_human = {"ids": [], "metadatas": [], "documents": []}
+        try:
+            recent_human = self.collection.get(where={"source": "human_resolved"}, limit=10)
+        except Exception:
+            pass
+            
+        return {
+            "total_cases": total,
+            "human_resolved_count": max(0, total - agent_count),
+            "agent_approved_count": agent_count,
+            "recent_agent_approved": [
+                {
+                    "case_id": meta.get("case_id", cid),
+                    "query": doc[:120],
+                    "resolution": meta.get("resolution", "")[:120],
+                    "intent": meta.get("intent", "other"),
+                    "source": "agent_generated_approved",
+                    "timestamp": meta.get("timestamp", "")
+                }
+                for cid, doc, meta in zip(agent_res.get("ids", []), agent_res.get("documents", []), agent_res.get("metadatas", []))
+            ],
+            "recent_human_resolved": [
+                {
+                    "case_id": meta.get("case_id", cid),
+                    "query": doc[:120],
+                    "resolution": meta.get("resolution", "")[:120],
+                    "intent": meta.get("intent", "other"),
+                    "source": "human_resolved",
+                    "product": meta.get("product", "")
+                }
+                for cid, doc, meta in zip(recent_human.get("ids", [])[:8], recent_human.get("documents", [])[:8], recent_human.get("metadatas", [])[:8])
+            ]
+        }

@@ -1,4 +1,5 @@
 import json
+import time
 from typing import Dict, Any, List, Optional, TypedDict
 from groq import Groq
 from langgraph.graph import StateGraph, END
@@ -32,6 +33,7 @@ class AgentState(TypedDict):
     grounding_case_ids: List[str]
     human_queue_id: Optional[int]
     status: str
+    node_traces: List[Dict[str, Any]]
 
 class CustomerSupportAgent:
     def __init__(self, vector_store: Optional[VectorStore] = None):
@@ -87,14 +89,26 @@ class CustomerSupportAgent:
     
     def _classify_node(self, state: AgentState) -> Dict[str, Any]:
         """Step 2: Classify intent, confidence, sentiment, urgency with one-line reason."""
+        t0 = time.perf_counter()
         res: ClassificationResult = self.classifier.classify(state["query"])
+        latency = round((time.perf_counter() - t0) * 1000, 1)
+        
+        traces = list(state.get("node_traces", []))
+        traces.append({
+            "node": "intent_classification",
+            "latency_ms": latency,
+            "output_summary": f"Intent: {res.intent} (Confidence: {res.confidence * 100:.1f}%, Urgency: {res.urgency})",
+            "decision": f"intent={res.intent}, urgency={res.urgency}"
+        })
+        
         return {
             "intent": res.intent,
             "confidence": res.confidence,
             "sentiment": res.sentiment,
             "urgency": res.urgency,
             "urgency_reason": res.urgency_reason,
-            "is_high_risk": res.is_high_risk
+            "is_high_risk": res.is_high_risk,
+            "node_traces": traces
         }
         
     def _hitl_check_node(self, state: AgentState) -> Dict[str, Any]:
@@ -106,6 +120,7 @@ class CustomerSupportAgent:
         - Strongly negative sentiment or repeated complaint
         - Classifier confidence below threshold (0.60)
         """
+        t0 = time.perf_counter()
         escalate = False
         reasons = []
         
@@ -129,17 +144,35 @@ class CustomerSupportAgent:
             escalate = True
             reasons.append(f"Low classifier confidence ({state.get('confidence'):.2f} < {self.cfg.confidence_escalation})")
             
+        latency = round((time.perf_counter() - t0) * 1000, 1)
+        traces = list(state.get("node_traces", []))
+        
         if escalate:
+            desc = " | ".join(reasons)
+            traces.append({
+                "node": "human_in_loop_check",
+                "latency_ms": latency,
+                "output_summary": f"Escalation triggered: {desc}",
+                "decision": "branch: escalate_to_human"
+            })
             return {
                 "escalate_to_human": True,
-                "escalation_reason": " | ".join(reasons),
-                "route": "human"
+                "escalation_reason": desc,
+                "route": "human",
+                "node_traces": traces
             }
         else:
+            traces.append({
+                "node": "human_in_loop_check",
+                "latency_ms": latency,
+                "output_summary": "Passed all triage safety checks (autonomous resolution eligible)",
+                "decision": "branch: search_in_db"
+            })
             return {
                 "escalate_to_human": False,
                 "escalation_reason": None,
-                "route": "agent"
+                "route": "agent",
+                "node_traces": traces
             }
             
     def _route_after_hitl(self, state: AgentState) -> str:
@@ -147,15 +180,27 @@ class CustomerSupportAgent:
         
     def _search_db_node(self, state: AgentState) -> Dict[str, Any]:
         """Step 4: Search top-k = 5 from ChromaDB, filtered by intent."""
+        t0 = time.perf_counter()
         hits = self.vector_store.search(
             query=state["query"],
             intent=state["intent"],
             top_k=self.cfg.vector_top_k
         )
+        latency = round((time.perf_counter() - t0) * 1000, 1)
         top_sim = hits[0]["similarity_score"] if hits else 0.0
+        
+        traces = list(state.get("node_traces", []))
+        traces.append({
+            "node": "search_in_db",
+            "latency_ms": latency,
+            "output_summary": f"Retrieved {len(hits)} cases (Top similarity: {top_sim:.4f} with +0.05 boost)",
+            "decision": f"top_similarity={top_sim:.4f}"
+        })
+        
         return {
             "retrieved_cases": hits,
-            "top_similarity": top_sim
+            "top_similarity": top_sim,
+            "node_traces": traces
         }
         
     def _decide_similarity_node(self, state: AgentState) -> Dict[str, Any]:
@@ -165,15 +210,31 @@ class CustomerSupportAgent:
         - MEDIUM (0.55 - 0.80): RELATED (answer using ONLY related scenarios)
         - LOW (< 0.55): NO_MATCH (escalate to human queue)
         """
+        t0 = time.perf_counter()
         top_score = state.get("top_similarity", 0.0)
         if top_score >= self.cfg.similarity_high:
             decision = "FOUND"
+            next_action = "branch: generate_reply (FOUND tier)"
         elif top_score >= self.cfg.similarity_medium:
             decision = "RELATED"
+            next_action = "branch: generate_reply (RELATED tier)"
         else:
             decision = "NO_MATCH"
+            next_action = "branch: escalate_to_human (Score below 0.55)"
             
-        return {"retrieval_decision": decision}
+        latency = round((time.perf_counter() - t0) * 1000, 1)
+        traces = list(state.get("node_traces", []))
+        traces.append({
+            "node": "decide_similarity",
+            "latency_ms": latency,
+            "output_summary": f"Threshold evaluation: score {top_score:.4f} maps to '{decision}'",
+            "decision": next_action
+        })
+            
+        return {
+            "retrieval_decision": decision,
+            "node_traces": traces
+        }
         
     def _route_after_similarity(self, state: AgentState) -> str:
         if state.get("retrieval_decision") == "NO_MATCH":
@@ -182,6 +243,7 @@ class CustomerSupportAgent:
         
     def _escalate_node(self, state: AgentState) -> Dict[str, Any]:
         """Step 6: Escalate to human queue and notify customer."""
+        t0 = time.perf_counter()
         reason = state.get("escalation_reason") or "No sufficiently similar historical resolution found in database (< 0.55 similarity)"
         
         queue_id = add_to_human_queue(
@@ -212,12 +274,22 @@ class CustomerSupportAgent:
             grounding_case_ids=[]
         )
         
+        latency = round((time.perf_counter() - t0) * 1000, 1)
+        traces = list(state.get("node_traces", []))
+        traces.append({
+            "node": "escalate_to_human",
+            "latency_ms": latency,
+            "output_summary": f"Enqueued in Human Queue #{queue_id} (Urgency: {state.get('urgency')})",
+            "decision": "action: human_agent_pending"
+        })
+        
         return {
             "route": "human",
             "reply": reply,
             "grounding_case_ids": [],
             "human_queue_id": queue_id,
-            "status": "pending_human_response"
+            "status": "pending_human_response",
+            "node_traces": traces
         }
         
     def _generate_reply_node(self, state: AgentState) -> Dict[str, Any]:
@@ -226,6 +298,7 @@ class CustomerSupportAgent:
         - FOUND: extract and adapt the human resolution.
         - RELATED: answers using ONLY related human-solved scenarios with NO outside claims.
         """
+        t0 = time.perf_counter()
         decision = state.get("retrieval_decision", "RELATED")
         cases = state.get("retrieved_cases", [])
         grounding_ids = [str(c["case_id"]) for c in cases]
@@ -283,11 +356,21 @@ STRICT INSTRUCTIONS:
             grounding_case_ids=grounding_ids
         )
         
+        latency = round((time.perf_counter() - t0) * 1000, 1)
+        traces = list(state.get("node_traces", []))
+        traces.append({
+            "node": "generate_reply",
+            "latency_ms": latency,
+            "output_summary": f"Generated grounded response using {len(grounding_ids)} scenarios ({decision} mode)",
+            "decision": "action: reply_dispatched"
+        })
+        
         return {
             "route": "agent",
             "reply": reply,
             "grounding_case_ids": grounding_ids,
-            "status": "resolved_by_agent"
+            "status": "resolved_by_agent",
+            "node_traces": traces
         }
         
     def process_ticket(self, query: str, ticket_id: Optional[str] = None) -> AgentState:
@@ -313,7 +396,8 @@ STRICT INSTRUCTIONS:
             "reply": "",
             "grounding_case_ids": [],
             "human_queue_id": None,
-            "status": "initiated"
+            "status": "initiated",
+            "node_traces": []
         }
         
         final_state = self.graph.invoke(initial_state)
