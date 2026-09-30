@@ -1,0 +1,188 @@
+{
+  "total_audited": 20,
+  "grounded_count": 19,
+  "hallucination_count": 1,
+  "groundedness_ratio": 0.95,
+  "audit_findings": [
+    {
+      "ticket_id": 233,
+      "query": "I'm having an issue with the HP Pavilion. Please assist. I'm having an issue with the (product_purchased). Please assist",
+      "reply_snippet": "I understand that your HP\u202fPavilion is experiencing intermittent problems that are affecting gameplay.  \nA similar intermittent issue was reported in *",
+      "retrieved_count": 5,
+      "top_similarity": 0.6172,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 108,
+      "query": "I'm having an issue with the LG Smart TV. Please assist. I've checked for software updates, and my LG Smart TV is alread",
+      "reply_snippet": "Hi there,\n\nI\u2019m sorry you\u2019re still having trouble with your LG Smart TV. Since you\u2019ve already confirmed that the TV is on the latest software version, ",
+      "retrieved_count": 5,
+      "top_similarity": 0.9516,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 10,
+      "query": "My Dyson Vacuum Cleaner is making strange noises and not functioning properly. I suspect there might be a hardware issue",
+      "reply_snippet": "I\u2019m sorry to hear that your Dyson vacuum is acting up.  \nFrom the cases we have on hand, the only similar situations involve other consumer electronic",
+      "retrieved_count": 5,
+      "top_similarity": 0.6199,
+      "is_grounded": false,
+      "audit_notes": "Made outside financial promise not found in retrieved case"
+    },
+    {
+      "ticket_id": 26,
+      "query": "My HP Pavilion is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you",
+      "reply_snippet": "I\u2019m sorry to hear about the noise and performance issues on your HP Pavilion.  \nFrom the related cases that were provided, none of them directly addre",
+      "retrieved_count": 5,
+      "top_similarity": 0.7037,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 74,
+      "query": "My Fitbit Charge is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can y",
+      "reply_snippet": "**Resolution based on past cases**\n\nFrom the similar issues we\u2019ve seen, the recommended steps are:\n\n> \u201cStop them dinner great drive see lose.\u201d\n\nIf thi",
+      "retrieved_count": 5,
+      "top_similarity": 0.6279,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 115,
+      "query": "My Sony 4K HDR TV is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can ",
+      "reply_snippet": "Hi there,\n\nI\u2019m sorry to hear your Sony 4K HDR TV is making strange noises and isn\u2019t working right. Let\u2019s try a few quick steps to see if we can get it",
+      "retrieved_count": 5,
+      "top_similarity": 1.0,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 141,
+      "query": "There seems to be a hardware problem with my LG Washing Machine. The screen is flickering, and I'm unable to use it. Wha",
+      "reply_snippet": "I\u2019m sorry to hear about the flickering screen on your LG Washing Machine.  \nFrom the related cases we have on hand, none of them cover an LG appliance",
+      "retrieved_count": 5,
+      "top_similarity": 0.6705,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 175,
+      "query": "My LG Smart TV is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you",
+      "reply_snippet": "I\u2019m sorry to hear that your LG Smart TV is making strange noises.  \nFrom the cases that have already been resolved, none of them involve an LG Smart T",
+      "retrieved_count": 5,
+      "top_similarity": 0.7117,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 234,
+      "query": "I'm having an issue with the Bose SoundLink Speaker. Please assist. Thanks! I've recently updated the firmware of my Bos",
+      "reply_snippet": "I\u2019m sorry to hear the issue started after the firmware update. Here\u2019s a quick checklist that usually resolves post\u2011update problems:\n\n1. **Restart the ",
+      "retrieved_count": 5,
+      "top_similarity": 0.9489,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 512,
+      "query": "I'm having an issue with the Canon EOS. Please assist. Thanks, and thanks a lot, I've tried clearing the cache and data ",
+      "reply_snippet": "I\u2019m sorry you\u2019re still experiencing trouble with your Canon EOS.  \nFrom the past cases that match your description, the following steps were taken:\n\n1",
+      "retrieved_count": 5,
+      "top_similarity": 0.7553,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 14,
+      "query": "I've recently set up my Nest Thermostat, but it fails to connect to any available networks. What steps should I take to ",
+      "reply_snippet": "I\u2019m sorry you\u2019re having trouble getting your Nest Thermostat online.  \nFrom the similar cases that have been resolved, the following steps are usually",
+      "retrieved_count": 5,
+      "top_similarity": 0.5719,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 36,
+      "query": "I've recently set up my GoPro Hero, but it fails to connect to any available networks. What steps should I take to troub",
+      "reply_snippet": "Hi there! I\u2019m sorry you\u2019re having trouble with your GoPro Hero. Below are some quick, step\u2011by\u2011step fixes for both the Wi\u2011Fi connection issue and the b",
+      "retrieved_count": 5,
+      "top_similarity": 1.0,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 41,
+      "query": "I've recently set up my PlayStation, but it fails to connect to any available networks. What steps should I take to trou",
+      "reply_snippet": "Hi there,\n\nI\u2019m sorry you\u2019re having trouble getting your PlayStation to see any Wi\u2011Fi networks. Let\u2019s walk through a quick checklist to get it connecte",
+      "retrieved_count": 5,
+      "top_similarity": 0.9789,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 52,
+      "query": "I've recently set up my LG Smart TV, but it fails to connect to any available networks. What steps should I take to trou",
+      "reply_snippet": "I\u2019m sorry you\u2019re having trouble getting your LG Smart TV online. Let\u2019s walk through a quick, step\u2011by\u2011step checklist that usually resolves this type of",
+      "retrieved_count": 5,
+      "top_similarity": 1.0,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 72,
+      "query": "I've recently set up my iPhone, but it fails to connect to any available networks. What steps should I take to troublesh",
+      "reply_snippet": "I\u2019m sorry you\u2019re having trouble getting your iPhone to see any Wi\u2011Fi networks. Let\u2019s walk through a quick, step\u2011by\u2011step checklist that usually resolve",
+      "retrieved_count": 5,
+      "top_similarity": 1.0,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 98,
+      "query": "I've recently set up my Xbox, but it fails to connect to any available networks. What steps should I take to troubleshoo",
+      "reply_snippet": "I\u2019m sorry you\u2019re still having trouble getting your Xbox online. Let\u2019s try a quick, step\u2011by\u2011step checklist that usually resolves this type of issue:\n\n1",
+      "retrieved_count": 5,
+      "top_similarity": 1.0,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 110,
+      "query": "The Bose SoundLink Speaker is unable to establish a stable internet connection. It keeps disconnecting intermittently. H",
+      "reply_snippet": "I\u2019m sorry you\u2019re having trouble with your Bose\u202fSoundLink Speaker. Let\u2019s get it back online with a quick, step\u2011by\u2011step check:\n\n1. **Restart the Speaker",
+      "retrieved_count": 5,
+      "top_similarity": 0.8645,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 187,
+      "query": "I'm having trouble connecting my iPhone to my home Wi-Fi network. It doesn't detect any networks, although other devices",
+      "reply_snippet": "I\u2019m sorry you\u2019re still having trouble. Let\u2019s try a few quick steps that usually resolve this issue:\n\n1. **Restart your iPhone** \u2013 a simple reboot ofte",
+      "retrieved_count": 5,
+      "top_similarity": 1.0,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 155,
+      "query": "I'm having an issue with the Roomba Robot Vacuum. Please assist. 6.0.2 Bug fixes and other improvements. 6.0.1 Bug fixes",
+      "reply_snippet": "Hi there,\n\nI\u2019m sorry you\u2019re still having trouble after trying the usual fixes. Let\u2019s try a few more targeted steps that often resolve post\u2011update issu",
+      "retrieved_count": 5,
+      "top_similarity": 0.9343,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    },
+    {
+      "ticket_id": 4831,
+      "query": "I'm having an issue with the Roomba Robot Vacuum. Please assist. I'm using xda-developer for something different. If the",
+      "reply_snippet": "Hi there,\n\nI\u2019m sorry you\u2019re still having trouble with the Roomba app. Let\u2019s try a few quick steps that often resolve these kinds of issues:\n\n1. **Rest",
+      "retrieved_count": 5,
+      "top_similarity": 0.961,
+      "is_grounded": true,
+      "audit_notes": "Grounded in retrieved scenarios"
+    }
+  ]
+}

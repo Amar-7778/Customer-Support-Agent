@@ -1,0 +1,35 @@
+# System Configuration for Novintix Support Agent
+
+llm:
+  provider: "groq"
+  taxonomy_model: "openai/gpt-oss-120b"
+  classifier_model: "openai/gpt-oss-20b"
+  generator_model: "openai/gpt-oss-20b"
+  fast_model: "openai/gpt-oss-20b"
+  temperature: 0.0
+
+embeddings:
+  model_name: "all-MiniLM-L6-v2"
+  dimension: 384
+  batch_size: 64
+
+thresholds:
+  confidence_escalation: 0.60
+  similarity_high: 0.80
+  similarity_medium: 0.55
+  similarity_low: 0.55
+
+vector_db:
+  collection_name: "solved_customer_tickets"
+  persist_directory: "data/chroma_db"
+  top_k: 5
+  human_resolved_boost: 0.05  # Boost score for human_resolved vs agent_generated
+
+database:
+  sqlite_path: "data/support_system.db"
+
+paths:
+  raw_data: "data/customer_support_tickets.csv"
+  cleaned_data: "data/cleaned_tickets.csv"
+  taxonomy_file: "data/intent_taxonomy_v1.json"
+  golden_set: "data/golden_evaluation_set.json"

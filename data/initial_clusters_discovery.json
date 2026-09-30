@@ -1,0 +1,314 @@
+[
+  {
+    "name": "device_malfunction",
+    "definition": "User reports a persistent problem with their LG washing machine, often after firmware or software updates, covering performance, connectivity, or security concerns.",
+    "example_queries": [
+      "I'm having an issue with the LG Washing Machine. Please assist. This problem started occurring after the recent software update. I haven't made any other changes to the device.",
+      "I'm having trouble connecting my LG Washing Machine to my home Wi-Fi network. It doesn't detect any networks, although other devices are connecting fine.",
+      "I'm concerned about the security of my LG Washing Machine and would like to ensure that my data is safe."
+    ],
+    "risk_level": "high",
+    "risk_reason": "The queries mention data security and potential hardware failure, which could involve privacy or safety issues.",
+    "cluster_id": 0,
+    "cluster_size": 180
+  },
+  {
+    "name": "device_malfunction",
+    "definition": "User reports a persistent technical problem with a device (e.g., LG Smart TV, Samsung Galaxy) that remains unresolved after previous support attempts.",
+    "example_queries": [
+      "I'm having an issue with the LG Smart TV. Please assist. I've already contacted customer support multiple times, but the issue remains unresolved.",
+      "I've noticed a software bug in the LG Smart TV app. It's causing data loss and unexpected errors. How can I resolve this issue?",
+      "I'm encountering a software bug in the Samsung Galaxy. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available?"
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue concerns device functionality rather than payment, security breach, or legal matters.",
+    "cluster_id": 1,
+    "cluster_size": 317
+  },
+  {
+    "name": "data_loss_recovery",
+    "definition": "User reports missing or deleted files on a device and asks for assistance to retrieve or recover the lost data.",
+    "example_queries": [
+      "I've encountered a data loss issue with my Samsung Galaxy. All the files and documents seem to have disappeared. Can you guide me on how to retrieve them?",
+      "I've accidentally deleted important data from my Google Pixel. Is there any way to recover the deleted files? I need them urgently.",
+      "My Sony PlayStation crashed, and I lost all the data stored on it. Is there any way to recover the lost data?"
+    ],
+    "risk_level": "high",
+    "risk_reason": "The issue involves potential loss of personal or sensitive data and mentions security concerns.",
+    "cluster_id": 2,
+    "cluster_size": 473
+  },
+  {
+    "name": "hardware_malfunction",
+    "definition": "User reports that their Xbox or Xbox controller is not functioning correctly, including charging problems, intermittent operation, or software bugs.",
+    "example_queries": [
+      "I'm having an issue with the Microsoft Xbox Controller. Please assist. I'm not sure if this issue is specific to my device or if others have reported similar problems.",
+      "I'm having an issue with the Xbox. Please assist. This problem started occurring after the recent software update and the device won't turn on.",
+      "I'm using the original charger that came with my Xbox, but it's not charging properly."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The queries involve device functionality issues without payment disputes, refunds, or account compromise.",
+    "cluster_id": 3,
+    "cluster_size": 300
+  },
+  {
+    "name": "device_malfunction",
+    "definition": "User reports problems with the operation of their Nest Thermostat or Google Nest device, such as software bugs, connectivity issues, battery drain, or possible hardware failure, and requests assistance.",
+    "example_queries": [
+      "I'm having an issue with the Nest Thermostat. Please assist. I've reviewed the troubleshooting steps on the official support website, but they didn't resolve the problem.",
+      "I've noticed a sudden decrease in battery life on my Google Nest. It used to last much longer.",
+      "There seems to be a glitch in the Nest Thermostat software. It freezes frequently, making it difficult to use."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue concerns device functionality and does not involve payment, account security, or legal matters.",
+    "cluster_id": 4,
+    "cluster_size": 385
+  },
+  {
+    "name": "product_technical_issue",
+    "definition": "User reports a malfunction or performance problem with a purchased hardware or software product and requests help to resolve it.",
+    "example_queries": [
+      "I'm having an issue with the Dell XPS. Please assist. I've followed the troubleshooting steps mentioned in the user manual, but the issue persists.",
+      "I'm having an issue with the HP Pavilion. Please assist. This problem started occurring after the recent software update. I haven't made any other changes to the device.",
+      "I'm having an issue with the Autodesk AutoCAD. Please assist. I've recently updated the firmware of my Autodesk AutoCAD, and the issue started happening afterward. Could it be related to the update?"
+    ],
+    "risk_level": "low",
+    "risk_reason": "The request concerns product functionality and does not involve payment disputes, refunds, security, or legal matters.",
+    "cluster_id": 5,
+    "cluster_size": 456
+  },
+  {
+    "name": "device_malfunction",
+    "definition": "User reports persistent functional problems with their LG OLED device that remain after troubleshooting and may require repair, replacement, or security assistance.",
+    "example_queries": [
+      "I'm having an issue with the LG OLED. This problem started occurring after the recent software update.",
+      "I'm facing issues logging into my LG OLED account. It says my account is locked. What should I do to unlock it?",
+      "I'm concerned about the security of my LG OLED and would like to ensure that my data is safe."
+    ],
+    "risk_level": "high",
+    "risk_reason": "Involves security concerns, account lockout, and potential refund/repair requests.",
+    "cluster_id": 6,
+    "cluster_size": 190
+  },
+  {
+    "name": "hardware_failure",
+    "definition": "User reports that a Canon DSLR or EOS camera is malfunctioning or experiencing software/hardware issues despite following troubleshooting steps.",
+    "example_queries": [
+      "There seems to be a glitch in the Canon DSLR Camera software. It freezes frequently, making it difficult to use.",
+      "I've performed a factory reset on my Canon DSLR Camera, hoping it would resolve the problem, but it didn't help.",
+      "I'm concerned about the security of my Canon EOS and would like to ensure that my data is safe."
+    ],
+    "risk_level": "high",
+    "risk_reason": "the query includes data security concerns for the device",
+    "cluster_id": 7,
+    "cluster_size": 498
+  },
+  {
+    "name": "device_error_code_inquiry",
+    "definition": "User reports seeing an error code on a device screen and asks for its meaning and possible resolution.",
+    "example_queries": [
+      "I'm having an issue with the Samsung Galaxy. Please assist. I've noticed a peculiar error message popping up on my Samsung Galaxy screen. It says '[ERROR_CODE]'. What does it mean?",
+      "I'm having an issue with the MacBook Pro. Please assist. I've noticed a peculiar error message popping up on my MacBook Pro screen. It says '[ERROR_CODE]'. What does it mean?",
+      "I'm having an issue with the Sony Xperia. Please assist. I've noticed a peculiar error message popping up on my Sony Xperia screen. It says '[ERROR_CODE]'. What does it mean?"
+    ],
+    "risk_level": "low",
+    "risk_reason": "The query only seeks clarification of an error code and does not involve payments, refunds, account security, or legal matters.",
+    "cluster_id": 8,
+    "cluster_size": 245
+  },
+  {
+    "name": "device_malfunction",
+    "definition": "User reports that a wearable device (e.g., Fitbit Versa, Fitbit Charge, Garmin Forerunner) is not functioning correctly, often after a software/firmware update, and seeks troubleshooting assistance.",
+    "example_queries": [
+      "I'm having an issue with the Fitbit Versa Smartwatch. This problem started occurring after the recent software update and troubleshooting steps didn't help.",
+      "I've noticed a sudden decrease in battery life on my Fitbit Charge after the latest firmware update and the issue persists.",
+      "I'm unable to find the option to perform the desired action in the Garmin Forerunner and need guidance on the steps."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue concerns device functionality only and does not involve payments, refunds, account security, or legal matters.",
+    "cluster_id": 9,
+    "cluster_size": 480
+  },
+  {
+    "name": "hardware_failure",
+    "definition": "User reports a persistent malfunction or software issue with their Amazon Echo device despite following troubleshooting steps and seeks assistance.",
+    "example_queries": [
+      "I'm having an issue with the Amazon Echo; I've tried the manual steps but it still won't work.",
+      "After the recent firmware update my Echo keeps crashing when I use a specific feature.",
+      "I performed a factory reset on my Echo but the problem persists; need help."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue does not involve payments, refunds, account security, or legal matters.",
+    "cluster_id": 10,
+    "cluster_size": 196
+  },
+  {
+    "name": "account_login_failure",
+    "definition": "User cannot access their account because password reset or login fails, often reporting invalid credentials or a locked account.",
+    "example_queries": [
+      "I've forgotten my password for my Sony Xperia account, and the password reset option is not working. How can I recover my account?",
+      "I'm facing issues logging into my Google Nest account. It says my account is locked. What should I do to unlock it?",
+      "I'm unable to access my Samsung Galaxy account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information. How can I regain access to my account?"
+    ],
+    "risk_level": "high",
+    "risk_reason": "High risk due to account lockout and potential security implications.",
+    "cluster_id": 11,
+    "cluster_size": 481
+  },
+  {
+    "name": "hardware_failure",
+    "definition": "User reports that their Philips Hue Lights are not functioning correctly and seeks assistance after trying troubleshooting steps, firmware updates, or resets.",
+    "example_queries": [
+      "I'm having an issue with the Philips Hue Lights after a firmware update; it keeps showing an error code.",
+      "I performed a factory reset on my Philips Hue Lights but the device still won't connect or work properly.",
+      "Multiple Philips Hue Lights devices are intermittently failing, affecting my work productivity."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue concerns device functionality only and does not involve payment disputes, refunds, security breaches, or legal matters.",
+    "cluster_id": 12,
+    "cluster_size": 186
+  },
+  {
+    "name": "device_technical_issue",
+    "definition": "User is requesting help for a malfunction, software bug, or performance problem with a Bose device.",
+    "example_queries": [
+      "I'm having an issue with the Bose SoundLink Speaker. Please assist. This problem started occurring after the recent software update.",
+      "I'm unable to access my Bose SoundLink Speaker account. It keeps displaying an 'Invalid Credentials' error, even though I'm using the correct login information.",
+      "I'm encountering a software bug in the Bose QuietComfort. Whenever I try to perform a specific action, the application crashes."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The request involves technical assistance only, without payment, refund, or security breach concerns.",
+    "cluster_id": 13,
+    "cluster_size": 313
+  },
+  {
+    "name": "hardware_failure",
+    "definition": "User reports that a Sony device (e.g., PlayStation, Xperia, 4K HDR TV) is malfunctioning\u2014such as crashes, charging issues, battery drain, or intermittent performance\u2014often after a software update and seeks troubleshooting assistance.",
+    "example_queries": [
+      "I'm having an issue with the Sony PlayStation. Please assist. This problem started occurring after the recent software update. I haven't made any other changes to the device.",
+      "I'm having an issue with the Sony Xperia. Please assist. I'm using the original charger that came with my Sony Xperia, but it's not charging properly.",
+      "I'm encountering a software bug in the Sony 4K HDR TV. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available?"
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue pertains to device functionality and does not involve payment disputes, refunds, security, or legal matters.",
+    "cluster_id": 14,
+    "cluster_size": 634
+  },
+  {
+    "name": "device_malfunction",
+    "definition": "User reports that a device (e.g., iPhone, AirPods, Kindle, Pixel) is not functioning correctly\u2014often after a software update\u2014and seeks technical assistance.",
+    "example_queries": [
+      "I'm having an issue with the iPhone. This problem started occurring after the recent software update and I haven't made any other changes to the device.",
+      "I'm facing a problem with my Apple AirPods. The AirPods are not turning on and the issue persists despite following the troubleshooting steps.",
+      "I'm having an issue with the Amazon Kindle. I've tried different cables and adapters, but the device still doesn't work."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue is technical support related and does not involve payment disputes, refunds, security, or legal matters.",
+    "cluster_id": 15,
+    "cluster_size": 616
+  },
+  {
+    "name": "device_wifi_connectivity",
+    "definition": "User cannot detect or connect a device to Wi\u2011Fi networks and seeks troubleshooting guidance.",
+    "example_queries": [
+      "I've recently set up my Sony Xperia, but it fails to connect to any available networks. What steps should I take to troubleshoot this issue?",
+      "I'm having trouble connecting my LG Smart TV to my home Wi\u2011Fi network. It doesn't detect any networks, although other devices are connecting fine. What can be done to resolve this issue?",
+      "The Xbox is unable to establish a stable internet connection. It keeps disconnecting intermittently. How can I troubleshoot this network problem?"
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue is purely technical connectivity, not involving payments, security, or legal concerns.",
+    "cluster_id": 16,
+    "cluster_size": 445
+  },
+  {
+    "name": "product_technical_issue",
+    "definition": "User reports a problem with a software or hardware product (e.g., Microsoft Office, Surface, Adobe Photoshop) and requests troubleshooting or assistance.",
+    "example_queries": [
+      "I'm having an issue with the Microsoft Office. Please assist. I'm not sure if this issue is specific to my device or if others have reported similar problems.",
+      "I'm having an issue with the Adobe Photoshop. Please assist. My Adobe Photoshop is making strange noises and not functioning properly. I suspect there might be a hardware issue.",
+      "I'm encountering a software bug in the Microsoft Surface. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available?"
+    ],
+    "risk_level": "high",
+    "risk_reason": "Includes concerns about data security and mentions payment/transaction verification, which elevate the risk.",
+    "cluster_id": 17,
+    "cluster_size": 444
+  },
+  {
+    "name": "hardware_failure",
+    "definition": "User reports that their Samsung Soundbar is malfunctioning (e.g., strange noises, loss of functionality, issues after firmware update) and seeks troubleshooting or repair assistance.",
+    "example_queries": [
+      "My Samsung Soundbar is making strange noises and not functioning properly. I suspect there might be a hardware issue. Can you please help me?",
+      "I've performed a factory reset on my Samsung Soundbar, hoping it would resolve the problem, but it didn't help.",
+      "I've recently updated the firmware of my Samsung Soundbar, and the issue started happening afterward. Could it be related to the update?"
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue pertains to product functionality without involving payments, account security, or legal matters.",
+    "cluster_id": 18,
+    "cluster_size": 156
+  },
+  {
+    "name": "device_malfunction",
+    "definition": "User reports unresolved technical problems with a GoPro Hero/Action Camera, such as software freezes, hardware failures, battery drain, or account login errors, and seeks further assistance.",
+    "example_queries": [
+      "I'm having an issue with the GoPro Hero. I've performed a factory reset but the problem persists.",
+      "The GoPro Hero software freezes frequently and makes it difficult to use.",
+      "I can't access my GoPro Action Camera account; it shows an 'Invalid Credentials' error."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue relates to product functionality rather than payment, refund, or security-sensitive matters.",
+    "cluster_id": 19,
+    "cluster_size": 341
+  },
+  {
+    "name": "controller_malfunction",
+    "definition": "User reports that their Nintendo Switch Pro Controller is not functioning correctly (hardware or software issues) despite troubleshooting, and may need repair, replacement, or security assurance.",
+    "example_queries": [
+      "I'm having an issue with the Nintendo Switch Pro Controller. Please assist. I've followed the troubleshooting steps mentioned in the user manual, but the issue persists.",
+      "I'm encountering a software bug in the Nintendo Switch Pro Controller. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available?",
+      "I'm concerned about the security of my Nintendo Switch Pro Controller and would like to ensure that my data is safe."
+    ],
+    "risk_level": "high",
+    "risk_reason": "Includes security concerns and potential requests for repair/replacement which may involve personal data or warranty claims.",
+    "cluster_id": 20,
+    "cluster_size": 316
+  },
+  {
+    "name": "hardware_failure",
+    "definition": "User reports a malfunction or technical issue with their Asus ROG device and requests troubleshooting assistance.",
+    "example_queries": [
+      "I'm having an issue with the Asus ROG. Please assist. I've followed online tutorials and community forums to troubleshoot the issue, but no luck so far.",
+      "I'm having an issue with the Asus ROG. Please assist. This problem started occurring after the recent software update and is intermittent.",
+      "I'm having an issue with the Asus ROG. Please assist. I'm concerned about the security of my Asus ROG and would like to ensure that my data is safe."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The request concerns technical troubleshooting without payment, refund, or legal implications.",
+    "cluster_id": 21,
+    "cluster_size": 159
+  },
+  {
+    "name": "device_technical_issue",
+    "definition": "User reports a hardware or software problem with their device (e.g., Lenovo ThinkPad or MacBook Pro) and requests assistance after standard troubleshooting has failed.",
+    "example_queries": [
+      "I'm having an issue with the Lenovo ThinkPad. Please assist. I've performed a factory reset on my Lenovo ThinkPad, hoping it would resolve the problem, but it didn't help.",
+      "I'm facing a problem with my MacBook Pro. The MacBook Pro is not turning on. It was working fine until yesterday, but now it doesn't respond. Any ideas on how to fix this?",
+      "I'm encountering a software bug in the MacBook Pro. Whenever I try to perform a specific action, the application crashes. Are there any updates or fixes available?"
+    ],
+    "risk_level": "low",
+    "risk_reason": "The request concerns device functionality and does not involve payment disputes, refunds, security, account lockout, or legal issues.",
+    "cluster_id": 22,
+    "cluster_size": 284
+  },
+  {
+    "name": "robot_vacuum_malfunction",
+    "definition": "Customer reports that their robot vacuum (e.g., Roomba) is not functioning properly, often after a software update, and requests troubleshooting assistance.",
+    "example_queries": [
+      "I'm having an issue with the Roomba Robot Vacuum. Please assist. This problem started occurring after the recent software update.",
+      "I'm having an issue with the Roomba Robot Vacuum. Please assist. I've reviewed the troubleshooting steps on the official support website, but they didn't resolve the problem.",
+      "I'm having an issue with the Roomba Robot Vacuum. Please assist. I'm not sure if this issue is specific to my device or if others have reported similar problems."
+    ],
+    "risk_level": "low",
+    "risk_reason": "The issue concerns product functionality only, without payment, security, or legal implications.",
+    "cluster_id": 23,
+    "cluster_size": 303
+  }
+]
