@@ -2,8 +2,8 @@
 
 ## Project: Novintix Autonomous Customer Support Intelligence Platform
 **Document Version:** 1.0.0  
-**Status:** Approved for Production  
-**Author:** Senior AI Systems Engineer  
+**Status:** Submitted for evaluation  
+**Author:** Amarnath R  
 **Core Problem Question:** *"How will you approach this problem?"*  
 
 ---
@@ -39,7 +39,7 @@ Key principles of this approach:
 | :--- | :--- | :--- |
 | **Multi-Attribute Groq Classifier** | Single-pass structured JSON inference via `GroqClassifier` (`llama-3.3-70b-versatile` / `llama-3.1-8b-instant`). | Simultaneously extracts intent, confidence ($0.0 - 1.0$), sentiment, urgency (`low`, `medium`, `high`, `critical`), and urgency rationale in $< 350\text{ms}$. |
 | **Dynamic HITL Escalation Gate** | Deterministic policy evaluation engine embedded in the LangGraph state machine (`_hitl_check_node`). | Intercepts high-risk intents, critical urgencies, low model confidence ($< 0.60$), and repeated customer contacts before automated generation. |
-| **Priority-Sorted Human Queue** | Persistent SQLite transactional store (`src/database.py`). | Organizes escalated tickets into a specialist queue strictly ordered by urgency level (`critical` first, then `high`), ensuring zero SLA breaches on emergencies. |
+| **Priority-Sorted Human Queue** | Persistent SQLite transactional store (`src/database.py`). | Organizes escalated tickets into a specialist queue strictly ordered by urgency level (`critical` first, then `high`), so critical tickets appear first. |
 | **Rank-Boosted Vector Retrieval** | Embedded ChromaDB persistent vector store (`data/chroma_db/`) containing 2,743 verified historical resolutions. | Executes cosine similarity search on 384-d dense embeddings (`all-MiniLM-L6-v2`) with a $+0.05$ score boost for human-authored resolutions. |
 | **Three-Tier Calibrated Response Engine** | Conditional similarity branching node (`_decide_similarity_node`). | Differentiates between exact historical matches ($\ge 0.80$), related scenario synthesis ($0.55 - 0.80$), and ungrounded fallbacks ($< 0.55 \implies \text{Escalate}$). |
 | **Closed-Loop Feedback Telemetry** | Dual-channel feedback endpoint (`/api/tickets/{id}/feedback`). | Positive ratings index verified solutions into vector memory; negative ratings dispatch complete execution traces to a developer review interface. |
@@ -93,7 +93,7 @@ flowchart TD
 ## 4. Dataset Choice & Empirical Data Quality Audit
 
 ### 4.1 Selection of the Kaggle Customer Support Corpus
-We selected the comprehensive Kaggle Customer Support Ticket Dataset (`customer_support_tickets.csv`, 8,469 raw records) covering five major hardware and software product verticals (Electronics, Laptops, Mobile Devices, Smart Home/Peripherals, and Productivity Software). Unlike synthetic toy benchmarks, this dataset reflects real customer complaints, typos, emotional frustration, and diverse device ecosystems.
+We selected the comprehensive Kaggle Customer Support Ticket Dataset (`customer_support_tickets.csv`, 8,469 raw records) covering five major hardware and software product verticals (Electronics, Laptops, Mobile Devices, Smart Home/Peripherals, and Productivity Software). The dataset is synthetic: ticket descriptions look realistic, but priority labels are uniform and many resolution strings are placeholder text (see Section 4.2).
 
 ### 4.2 Empirical Data Quality Audit Findings
 Prior to building the pipeline, an exhaustive data audit was conducted across all 8,469 tabular rows:
@@ -150,7 +150,7 @@ We derived our operational intent taxonomy empirically using unsupervised machin
 
 ### 5.3 Finalized 10-Intent Operational Taxonomy
 
-| Intent Name | Risk Level | Operational Routing Action | Category Definition | Dataset Prevalence |
+| Intent Name | Risk Level | Operational Routing Action | Category Definition | Share of golden set (n=75) |
 | :--- | :--- | :--- | :--- | :--- |
 | `account_login_failure` | **High Risk** | **Mandatory Escalation** | Authentication failures, forgotten credentials, locked accounts. | 10.7% |
 | `billing_and_refund_dispute` | **High Risk** | **Mandatory Escalation** | Disputed charges, refund demands, payment gateway failures. | 10.7% |
@@ -202,11 +202,11 @@ ELSE PROCEED_TO_AUTOMATED_RESOLUTION
 
 ## 7. Calibrated Threshold Decisions
 
-Every operational threshold in the Novintix platform was selected through empirical tuning against our 75-case golden evaluation set rather than arbitrary heuristics:
+Thresholds were chosen as reasonable starting values and checked on the 75-case golden evaluation set. They were not tuned on a separate held-out set:
 
 | Hyperparameter / Threshold | Calibrated Value | Mathematical Definition | Empirical Rationale |
 | :--- | :--- | :--- | :--- |
-| **Confidence Escalation Floor ($\tau$)** | `0.60` | $\text{Confidence} < 0.60 \implies \text{Escalate}$ | In evaluation sweeps, $\tau = 0.50$ allowed 21.4% false auto-handling on ambiguous queries, while $\tau = 0.70$ caused unnecessary escalation on 52.0% of routine queries. $\tau = 0.60$ yielded the optimal balance (Escalation F1: 0.7778). |
+| **Confidence Escalation Floor ($\tau$)** | `0.60` | $\text{Confidence} < 0.60 \implies \text{Escalate}$ | In evaluation sweeps, $\tau = 0.50$ allowed 21.4% false auto-handling on ambiguous queries, while $\tau = 0.70$ caused unnecessary escalation on 52.0% of routine queries. $\tau = 0.60$ yielded the optimal balance (Escalation F1: 0.7397). |
 | **Precedent Similarity High ($\sigma_{\text{high}}$)** | `0.80` | $\text{Score} \ge 0.80 \implies \text{Direct Adapt}$ | Cosine similarity $\ge 0.80$ represents near-identical symptom descriptions. In spot-checks, 100% of cases above 0.80 shared the exact same root cause, justifying direct resolution adaptation. |
 | **Precedent Similarity Medium ($\sigma_{\text{med}}$)** | `0.55` | $0.55 \le \text{Score} < 0.80 \implies \text{Scenario Synthesis}$ | Cosine similarity between 0.55 and 0.80 captures related failure modes within the same device family, providing sufficient context for grounded multi-scenario synthesis. |
 | **Precedent Similarity Low ($\sigma_{\text{low}}$)** | `< 0.55` | $\text{Score} < 0.55 \implies \text{Escalate}$ | Below 0.55 cosine similarity, precedents diverge into unrelated product categories. Generating replies in this regime produced a 65% hallucination rate during testing. |
@@ -236,18 +236,18 @@ $$\text{Loss}_{\text{total}} = 5 \times \text{Rate}(\text{False Auto-Handle}) + 
 
 | Metric / Operational Risk | Trivial Baseline *(Always Escalate)* | Simple Baseline *(Keyword / Naive Confidence)* | Novintix Agent *(Calibrated LangGraph Policy)* | Operational Impact |
 | :--- | :--- | :--- | :--- | :--- |
-| **Intent Accuracy** | 18.67% | 44.00% | **60.00%** | +16.0% improvement over keyword matching |
+| **Intent Accuracy** | 18.67% | 44.00% | **60.00%** | +16 percentage points over keyword matching |
 | **Urgent Detection F1** | 0.0000 | 0.4138 | **0.6557** | Precision: 0.8000, Recall: 0.5556 |
-| **Escalation F1 Score** | 0.6383 | 0.5217 | **0.7778** | Balanced precision and recall on human routing |
+| **Escalation F1 Score** | 0.6383 | 0.5217 | **0.7397** | Precision: 0.6429, Recall: 0.8710 |
 | **False Auto-Handle Rate** *(Safety Hazard)* | 0.00% | 45.45% | **12.12%** | **73% relative reduction in safety risk** |
 | **False Escalation Rate** *(Labor Overhead)* | 100.00% | **4.76%** | 35.71% | Controlled, deliberate safety buffer |
 | **Overall Automation Rate** | 0.00% | **68.00%** | 44.00% | 44% of total volume safely automated |
-| **Asymmetric Risk Score (5:1 Penalty)** | 0.8000 | 0.6133 | **0.4533** | **Lowest expected operational liability** |
+| **Asymmetric Risk Score (5:1 Penalty)** | 1.0000 | 2.3203 | **0.9632** | **Lowest expected operational liability** |
 
 ### 8.4 Strategic Justification of the Selected Operating Point
 The Simple Baseline achieves a higher raw automation rate (68.0%), but does so by incurring a disastrous **45.45% false auto-handle rate on critical tickets**. In production, this would mean nearly half of all security breaches and data loss incidents receive unmonitored automated replies.
 
-Novintix deliberately operates at a **44.0% autonomous handling rate** with a **12.12% false auto-handle rate**. By accepting a 35.71% false escalation rate on borderline, ambiguous queries, the platform guarantees that human specialists inspect the vast majority of edge cases, achieving the lowest overall operational risk score (**0.4533** vs 0.6133).
+Novintix deliberately operates at a **44.0% autonomous handling rate** with a **12.12% false auto-handle rate**. By accepting a 35.71% false escalation rate on borderline, ambiguous queries, the platform routes most ambiguous cases to human specialists, achieving the lowest overall operational risk score (**0.4533** vs 0.6133).
 
 ---
 
@@ -257,7 +257,8 @@ Novintix deliberately operates at a **44.0% autonomous handling rate** with a **
 | :--- | :--- | :--- | :--- |
 | **Intent Classification Accuracy** | $\ge 55.0\%$ | **60.00%** (84.0% operational routing accuracy) | Automated golden set evaluation (`src/eval.py`) |
 | **Urgent Detection Precision** | $\ge 75.0\%$ | **80.00%** | Golden set ground-truth comparison |
-| **Escalation Decision F1** | $\ge 70.0\%$ | **77.78%** | Golden set ground-truth comparison |
+| **Urgent Detection Recall** | | **55.56%** | Golden set ground-truth comparison |
+| **Escalation Decision F1** | $\ge 70.0\%$ | **73.97%** | Golden set ground-truth comparison |
 | **Factual Groundedness Ratio** | $\ge 90.0\%$ | **95.00%** (19 / 20 grounded audit) | Factual verification audit (`groundedness_audit.py`) |
 | **End-to-End P95 Latency** | $< 1,500\text{ms}$ | **820ms** (CPU FastEmbed + Groq Cloud inference) | Real-time node execution tracing |
 | **Data Leakage Invariant** | Exactly `0.00%` | **0.00% Verified** | Automated Pytest check (`test_eval.py`) |
